@@ -10,18 +10,28 @@
 #ifndef ACTORGRAPH_H
 #define ACTORGRAPH_H
 
+#include "ActorNode.hpp"
+#include "MovieNode.hpp"
+
 #include <iostream>
+#include <unordered_map>
+#include <utility>
+#include <vector>
 
 // Maybe include some data structures here
 
 using namespace std;
 
 class ActorGraph {
-    protected:
+    public:
 
         // Maybe add class data structure(s) here
-
-    public:
+        // keeps track of already created MovieNodes
+	unordered_map<string, MovieNode*> createdMovies; 
+	
+	// keeps track of already created ActorNodes
+	unordered_map<string, ActorNode*> createdActors;
+    
         ActorGraph(void);
 
         // Maybe add some more methods here
@@ -36,8 +46,10 @@ class ActorGraph {
          * return true if file was loaded sucessfully, false otherwise
          */
         bool loadFromFile(const char* in_filename, bool use_weighted_edges);
-
+	void BFS (string a1);
+	void clearGraph();
 };
 
 
 #endif // ACTORGRAPH_H
+

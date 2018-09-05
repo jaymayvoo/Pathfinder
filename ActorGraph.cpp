@@ -10,9 +10,14 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
+#include <climits> 
 #include <string>
 #include <vector>
+#include <queue>
+#include <unordered_set>
 #include "ActorGraph.hpp"
+#include "ActorNode.hpp"
+#include "MovieNode.hpp"
 
 using namespace std;
 
@@ -23,6 +28,12 @@ bool ActorGraph::loadFromFile(const char* in_filename, bool use_weighted_edges) 
     ifstream infile(in_filename);
 
     bool have_header = false;
+
+	unordered_map<string, ActorNode*>::const_iterator findActor;
+	unordered_map<string, MovieNode*>::const_iterator findMovie;
+	
+	ActorNode* newActor, *currActor;
+	MovieNode* newMovie, *currMovie;
 
     // keep reading lines until the end of file is reached
     while (infile) {
@@ -59,7 +70,35 @@ bool ActorGraph::loadFromFile(const char* in_filename, bool use_weighted_edges) 
         int movie_year = stoi(record[2]);
 
         // we have an actor/movie relationship, now what?
-    }
+        // check if actor name already created
+        findActor = createdActors.find( actor_name );
+
+		//creates new actor node if not in unordered_map
+    	if( findActor == createdActors.end() ) {
+			newActor = new ActorNode( actor_name );	
+			createdActors.insert( make_pair( actor_name, newActor ));
+			currActor = newActor;
+	}
+	else
+		currActor = findActor->second;
+		
+	//check if node movie already created
+	findMovie = createdMovies.find( movie_title );
+
+	//creates new movie node if not in unordered_map
+	if( findMovie == createdMovies.end() ) {
+		newMovie = new MovieNode( movie_title, movie_year );
+		createdMovies.insert( make_pair( movie_title, newMovie ) );
+		currMovie = newMovie;
+	}
+	else
+		currMovie = findMovie->second;
+
+	currActor->addMovie( currMovie );
+	currMovie->addActor( currActor );
+		
+
+	}
 
     if (!infile.eof()) {
         cerr << "Failed to read " << in_filename << "!\n";
@@ -69,3 +108,49 @@ bool ActorGraph::loadFromFile(const char* in_filename, bool use_weighted_edges) 
 
     return true;
 }
+void ActorGraph::BFS ( string actor1 ) {
+	unordered_map<string, ActorNode*>::const_iterator a1 = createdActors.find( actor1 );
+	ActorNode* currActor = a1->second;
+	ActorNode* movieCast;
+	MovieNode* currMovie;
+	queue<ActorNode*> actorq;
+	unordered_set<ActorNode*> set;
+	
+	actorq.push(currActor);
+	currActor->distance = 0;
+	set.insert(currActor);
+	while( !actorq.empty() ) {
+		currActor = actorq.front();
+		actorq.pop();
+		for( int i = 0; i < (int)currActor->movies.size(); i++ ) {
+
+			currMovie = currActor->movies[i];
+			
+			for( int j = 0; j < (int)currMovie->actors.size(); j++ ) {
+				movieCast = currMovie->actors[j];
+
+				if( set.find(movieCast) != set.end() ) {
+					if( movieCast->distance == INT_MAX ) {
+						movieCast->distance = (currActor->distance) + 1;
+						movieCast->prev = currActor;
+						movieCast->moviePath = currMovie->title;
+						movieCast->movieYear = currMovie->year;
+						actorq.push(movieCast);
+						set.insert(movieCast);
+					}
+				}
+			}
+		}
+
+	}	
+
+}
+
+void ActorGraph::clearGraph() {
+	unordered_map<string, ActorNode*>::iterator it = createdActors.begin();
+	while( it != createdActors.end() ) {
+		it->second->prev = nullptr;
+		it->second->visited = false;
+		it->second->distance = INT_MAX;
+	}
+} 
