@@ -71,7 +71,7 @@ int main( int argc, char* argv[] ) {
 	//fills vector of pairs
 	getPairs( argv[3], comparedActors );	
 	//create header in output file
-	ofile<< "(actor)--[movie#@year]-->(actor)--.." << endl;	
+	ofile<< "(actor)--[movie#@year]-->(actor)--..." << endl;	
 	
 	ActorNode *fromActor, *toActor;
 	unordered_map<string, ActorNode*>::const_iterator a1;
