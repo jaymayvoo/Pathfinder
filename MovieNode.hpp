@@ -1,3 +1,7 @@
+/*
+ * Author: Jamie Vu
+ * Date: 09/7/18
+ */
 #ifndef MOVIENODE_HPP
 #define MOVIENODE_HPP
 #include <string> 
@@ -5,7 +9,7 @@
 #include "ActorNode.hpp"
 
 using namespace std;
-
+class ActorNode;
 class MovieNode {
 	public:
 
@@ -15,9 +19,11 @@ class MovieNode {
 	int year;
 	vector<ActorNode*> actors;
 
+	//pushes new actor into vector
 	void addActor ( ActorNode* a) {
 		actors.push_back( a );
 	}
+
 };
 
 #endif //MOVIENODE_HPP
