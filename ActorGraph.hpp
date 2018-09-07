@@ -1,7 +1,12 @@
 /*
  * ActorGraph.h
+<<<<<<< HEAD
  * Author: Jamie Vu
  * Date:   9/7/18
+=======
+ * Author: <YOUR NAME HERE>
+ * Date:   <DATE HERE>
+>>>>>>> fb4c7fe7003cdac4b7af3de5e61eca000cbcf71f
  *
  * This file is meant to exist as a container for starter code that you can use to read the input file format
  * defined in movie_casts.tsv. Feel free to modify any/all aspects as you wish.
@@ -63,7 +68,7 @@ class ActorGraph {
 	
 	//destructor
 	~ActorGraph();
-
+    
         // Maybe add some more methods here
 
         /** You can modify this method definition as you wish
@@ -83,6 +88,8 @@ class ActorGraph {
 	bool addActorNodes(  const char* in_filename, int year);
 		
 };
+
+
 
 
 

@@ -1,7 +1,12 @@
 /*
  * ActorGraph.cpp
+<<<<<<< HEAD
  * Author: Jamie Vu
  * Date:   9/7/2018
+=======
+ * Author: <YOUR NAME HERE>
+ * Date:   <DATE HERE>
+>>>>>>> fb4c7fe7003cdac4b7af3de5e61eca000cbcf71f
  *
  * This file is meant to exist as a container for starter code that you can use to read the input file format
  * defined in movie_casts.tsv. Feel free to modify any/all aspects as you wish.
@@ -72,11 +77,11 @@ bool ActorGraph::loadFromFile(const char* in_filename, bool use_weighted_edges) 
         // check if actor name already created
         findActor = createdActors.find( actor_name );
 
-	//creates new actor node if not in unordered_map
+		//creates new actor node if not in unordered_map
     	if( findActor == createdActors.end() ) {
-		newActor = new ActorNode( actor_name );	
-		createdActors.insert( make_pair( actor_name, newActor ));
-		currActor = newActor;
+			newActor = new ActorNode( actor_name );	
+			createdActors.insert( make_pair( actor_name, newActor ));
+			currActor = newActor;
 	}
 	else
 		currActor = findActor->second;
@@ -167,7 +172,8 @@ bool ActorGraph::createMoviesByYear(const char* in_filename) {
 
 	}
 	
-	if (!infile.eof()) {
+
+    if (!infile.eof()) {
         cerr << "Failed to read " << in_filename << "!\n";
         return false;
     }
